@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SMP | Бесплатный вайб + Проходка</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0c12;
+            font-family: 'Press Start 2P', 'Courier New', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+
+        .minecraft-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, rgba(58, 92, 36, 0.4) 0px, rgba(58, 92, 36, 0.4) 2px, transparent 2px, transparent 8px),
+                repeating-linear-gradient(90deg, rgba(44, 66, 32, 0.3) 0px, rgba(44, 66, 32, 0.3) 1px, transparent 1px, transparent 8px);
+            background-color: #2c4220;
+            z-index: -2;
+        }
+
+        .minecraft-bg::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(255, 230, 140, 0.2) 0%, rgba(0,0,0,0) 60%);
+            pointer-events: none;
+        }
+
+        .dirt-overlay {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background-image: repeating-linear-gradient(45deg, #5a3e1a 0px, #5a3e1a 4px, #7a5a2a 4px, #7a5a2a 8px);
+            opacity: 0.7;
+            z-index: -1;
+            border-top: 4px solid #3a2a1a;
+        }
+
+        .pixel-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .minecraft-header {
+            background: #1f2a1b;
+            border: 4px solid #3b4d2e;
+            box-shadow: inset 0 0 0 2px #6a8a4a, 0 8px 0 #0e1a08;
+            padding: 20px;
+            margin-bottom: 40px;
+            text-align: center;
+            border-radius: 0px;
+        }
+
+        .server-title {
+            font-size: 3rem;
+            color: #ffd966;
+            text-shadow: 4px 4px 0 #3c2a1f, 2px 2px 0 #5a3e2a;
+            letter-spacing: 2px;
+        }
+
+        .server-sub {
+            color: #b0d18b;
+            font-size: 0.7rem;
+            margin-top: 20px;
+            background: #2a3422;
+            display: inline-block;
+            padding: 8px 16px;
+            border: 2px solid #5c7442;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .minecraft-btn {
+            background: #4c3e2c;
+            border: none;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 1.3rem;
+            padding: 16px 28px;
+            color: #f9f3cf;
+            text-shadow: 2px 2px 0 #2d2418;
+            cursor: pointer;
+            transition: all 0.08s linear;
+            box-shadow: 0 6px 0 #2a2219;
+            text-transform: uppercase;
+            min-width: 180px;
+        }
+
+        .minecraft-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #2a2219;
+        }
+
+        .btn-home {
+            background: #3f6a2f;
+            box-shadow: 0 6px 0 #1e3a14;
+        }
+        .btn-contact {
+            background: #2f5e6a;
+            box-shadow: 0 6px 0 #1e3e46;
+        }
+        .btn-prohodka {
+            background: #8b5a2b;
+            box-shadow: 0 6px 0 #5a3a1a;
+        }
+
+        .content-panel {
+            background: rgba(30, 27, 22, 0.85);
+            backdrop-filter: blur(2px);
+            border: 5px solid #6c6b47;
+            padding: 30px 25px;
+            margin-top: 20px;
+            margin-bottom: 40px;
+            box-shadow: inset 0 0 0 2px #b6a56a, 10px 10px 0 rgba(0,0,0,0.4);
+            transition: all 0.2s;
+            min-height: 450px;
+        }
+
+        .content-area {
+            color: #e0e0b0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .content-area h2 {
+            font-size: 1.4rem;
+            color: #ffc87c;
+            margin-bottom: 20px;
+            border-left: 8px solid #f5b642;
+            padding-left: 16px;
+        }
+
+        .content-area p {
+            margin-bottom: 16px;
+        }
+
+        .content-area ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+            list-style-type: square;
+        }
+
+        .pixel-divider {
+            width: 100%;
+            height: 8px;
+            background: repeating-linear-gradient(90deg, #5f7942, #5f7942 8px, #3a5324 8px, #3a5324 16px);
+            margin: 20px 0;
+        }
+
+        .minecraft-footer {
+            background: #1f2a1b;
+            border-top: 4px solid #3b4d2e;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.6rem;
+            color: #7d9468;
+        }
+
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            background: #1f1a10;
+            border-left: 8px solid #f7b32b;
+            padding: 12px 20px;
+            font-size: 0.7rem;
+            color: #efe2b2;
+            font-family: monospace;
+            z-index: 1000;
+            box-shadow: 4px 4px 0 #0a0a05;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        @media (max-width: 680px) {
+            .minecraft-btn {
+                font-size: 0.9rem;
+                padding: 12px 18px;
+                min-width: 130px;
+            }
+            .server-title {
+                font-size: 1.8rem;
+            }
+            .content-area {
+                font-size: 0.7rem;
+            }
+        }
+
+        .highlight {
+            background: #3c2a1f;
+            padding: 4px 8px;
+            color: #ffcf8a;
+            border-radius: 2px;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        .free-badge {
+            display: inline-block;
+            background: #3f6a2f;
+            padding: 6px 14px;
+            font-size: 0.7rem;
+            color: #d4ffa2;
+            border: 2px solid #8bc34a;
+            margin-top: 10px;
+            text-shadow: none;
+        }
+        
+        .ip-block {
+            background: #1e2a1a;
+            padding: 12px;
+            text-align: center;
+            border: 3px solid #7c9f4d;
+            margin: 20px 0;
+            font-size: 1rem;
+        }
+        
+        .copy-btn {
+            background: #4c3e2c;
+            border: none;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.6rem;
+            padding: 6px 12px;
+            margin-left: 10px;
+            color: #f9f3cf;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #2a2219;
+        }
+        
+        .copy-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #2a2219;
+        }
+
+        .nickname-input {
+            background: #2a2a1c;
+            border: 3px solid #7c9f4d;
+            padding: 12px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.8rem;
+            color: #ffd966;
+            width: 100%;
+            max-width: 350px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .nickname-input:focus {
+            outline: none;
+            border-color: #ffaa33;
+            background: #3a3a28;
+        }
+
+        .sponsor-contact {
+            background: #2a2e1a;
+            padding: 15px;
+            border-left: 6px solid #f5b642;
+            margin: 20px 0;
+            word-break: break-all;
+        }
+
+        .submit-nick-btn {
+            background: #5a7a3a;
+            border: none;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.7rem;
+            padding: 10px 20px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #2a3a1a;
+            margin-top: 5px;
+        }
+
+        .submit-nick-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #2a3a1a;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.6s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .discord-link {
+            color: #ffcf8a;
+            text-decoration: none;
+            border-bottom: 2px solid #ffcf8a;
+        }
+        
+        .discord-link:hover {
+            color: #ffffff;
+            border-bottom-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="minecraft-bg"></div>
+<div class="dirt-overlay"></div>
+
+<div class="pixel-container">
+    <div class="minecraft-header">
+        <div class="server-title">⚡ SMP ⚡</div>
+        <div class="server-sub">Бесплатный вайб • Survival Multiplayer | Заходи и играй!</div>
+    </div>
+
+    <div class="nav-menu">
+        <button class="minecraft-btn btn-home" id="homeBtn">🏠 ГЛАВНАЯ</button>
+        <button class="minecraft-btn btn-contact" id="contactBtn">📡 СВЯЗЬ</button>
+        <button class="minecraft-btn btn-prohodka" id="prohodkaBtn">⛏️ ПРОХОДКА</button>
+    </div>
+
+    <div class="content-panel">
+        <div class="content-area" id="dynamicContent">
+            <h2>🏰 Добро пожаловать на SMP!</h2>
+            <p>Сервер бесплатный, но только на этот вайб. Полный релакс, майнкрафт-атмосфера и настоящий выживач без доната на преимущества.</p>
+            <div class="pixel-divider"></div>
+            <p>✨ <strong>Особенности:</strong> дружелюбное комьюнити, экономика, приваты, ивенты и шахтерские гонки. Присоединяйся к нам!</p>
+            <p>🎮 IP: <span class="highlight">d1.rustix.me:25212</span> (версия 1.20+)</p>
+        </div>
+    </div>
+    
+    <div class="minecraft-footer">
+        © 2025 SMP Server — Бесплатный вайб навсегда | Играй с друзьями!
+    </div>
+</div>
+
+<div id="toastMessage" class="toast-msg"></div>
+
+<script>
+    const contentDiv = document.getElementById('dynamicContent');
+    const toast = document.getElementById('toastMessage');
+    
+    // ⚠️ ВАЖНО: Замените эту ссылку на ваш реальный Discord Webhook URL
+    const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/ВАШ_ВЕБХУК_URL";
+    const IS_DEMO_MODE = true;
+    
+    function showMessage(text, isError = false) {
+        toast.style.opacity = '1';
+        toast.innerText = text;
+        toast.style.borderLeftColor = isError ? '#c95a2b' : '#f7b32b';
+        setTimeout(() => {
+            toast.style.opacity = '0';
+        }, 2700);
+    }
+    
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            showMessage('✅ IP скопирован: ' + text);
+        }).catch(() => {
+            showMessage('❌ Не удалось скопировать', true);
+        });
+    }
+    
+    async function sendDiscordNotification(nickname, message) {
+        if (IS_DEMO_MODE) {
+            console.log(`[DEMO] Отправка уведомления спонсору krytou1755: Ник "${nickname}", Сообщение: "${message}"`);
+            return { success: true, demo: true };
+        }
+        
+        if (DISCORD_WEBHOOK_URL === "https://discord.com/api/webhooks/ВАШ_ВЕБХУК_URL") {
+            console.warn("Discord Webhook не настроен!");
+            return { success: false, error: "Webhook не настроен" };
+        }
+        
+        try {
+            const response = await fetch(DISCORD_WEBHOOK_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    content: `**🎮 НОВЫЙ ЗАПРОС ОТ ИГРОКА!**\n\n**Никнейм:** ${nickname}\n**Сообщение:** ${message}\n**Время:** ${new Date().toLocaleString()}\n**IP сервера:** d1.rustix.me:25212`,
+                    username: "SMP Проходка Бот",
+                    avatar_url: "https://cdn-icons-png.flaticon.com/512/2163/2163781.png"
+                })
+            });
+            
+            if (response.ok) {
+                return { success: true };
+            } else {
+                return { success: false, error: `HTTP ${response.status}` };
+            }
+        } catch (error) {
+            console.error("Ошибка отправки в Discord:", error);
+            return { success: false, error: error.message };
+        }
+    }
+    
+    async function submitNickname() {
+        const nicknameInput = document.getElementById('nicknameInput');
+        const messageInput = document.getElementById('messageInput');
+        
+        if (nicknameInput) {
+            let nickname = nicknameInput.value.trim();
+            if (nickname === "") {
+                showMessage("❌ Введите ваш никнейм!", true);
+                return;
+            }
+            
+            let additionalMessage = "";
+            if (messageInput) {
+                additionalMessage = messageInput.value.trim();
+            }
+            
+            const submitBtn = document.getElementById('submitNickBtn');
+            const originalText = submitBtn ? submitBtn.innerHTML : "";
+            if (submitBtn) {
+                submitBtn.innerHTML = "⏳ ОТПРАВКА...";
+                submitBtn.disabled = true;
+            }
+            
+            const fullMessage = additionalMessage ? `Сообщение: ${additionalMessage}` : "Хочет получить доступ к Проходке";
+            const result = await sendDiscordNotification(nickname, fullMessage);
+            
+            if (result.success) {
+                if (result.demo) {
+                    showMessage(`📢 [ДЕМО] Запрос от "${nickname}" записан! В реальном режиме уведомление уйдёт krytou1755 в Discord.`, false);
+                } else {
+                    showMessage(`✅ Ник "${nickname}" отправлен спонсору krytou1755! Он свяжется с вами в Discord.`, false);
+                }
+                const newUrl = window.location.origin + window.location.pathname + "?nick=" + encodeURIComponent(nickname);
+                window.history.pushState({ path: newUrl }, '', newUrl);
+                
+                nicknameInput.value = "";
+                if (messageInput) messageInput.value = "";
+            } else {
+                showMessage(`❌ Ошибка отправки: ${result.error}. Попробуйте позже.`, true);
+            }
+            
+            if (submitBtn) {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+    }
+    
+    // Главная
+    function renderHome() {
+        contentDiv.innerHTML = `
+            <h2>🏠 Главная страница — Бесплатный SMP</h2>
+            <p>Сервер бесплатный, но только на этот вайб! Никакого доната, который ломает баланс. Только скины, эмоции и чистый выживач.</p>
+            <div class="pixel-divider"></div>
+            <p><strong>📅 События этой недели:</strong></p>
+            <ul>
+                <li>🔨 Совместная стройка торговой площади — суббота 18:00 МСК</li>
+                <li>⚔️ Битва классов "Стражники против Разбойников"</li>
+                <li>🏆 Конкурс на лучшую ферму (приз — редкий блок командира)</li>
+            </ul>
+            <p>🌍 Карта без границ: исследовано 45% мира, остальное ждёт тебя!</p>
+            <div class="pixel-divider"></div>
+            <p>💎 <em>«Вайб решает всё — здесь ценят друзей и креатив, а не кошельки»</em></p>
+            <div class="ip-block">
+                🎮 <strong>IP для подключения:</strong> <span style="font-size:1.1rem;">d1.rustix.me:25212</span>
+                <button class="copy-btn" onclick="copyToClipboard('d1.rustix.me:25212')">📋 КОПИРОВАТЬ</button>
+            </div>
+            <p>⭐ Текущий онлайн: <strong>22 игрока</strong>. Заходи, не пожалеешь!</p>
+        `;
+        window.copyToClipboard = copyToClipboard;
+        showMessage('🏡 Главная страница: чилловый вайб гарантирован! IP: d1.rustix.me:25212');
+    }
+    
+    // Связь — обновленная ссылка Discord
+    function renderContact() {
+        contentDiv.innerHTML = `
+            <h2>📡 Связь и тусовка SMP</h2>
+            <p>Бесплатный сервер — бесплатное общение! Мы всегда на связи.</p>
+            <div class="pixel-divider"></div>
+            <p>💬 <strong>Discord сервер:</strong> <a href="https://discord.gg/DszzbgQk" target="_blank" class="discord-link">https://discord.gg/DszzbgQk</a> — тут голосовые каналы, конкурсы, помощь новичкам и живое общение!</p>
+            <p>📧 <strong>Почта:</strong> vibe@smp-minecraft.ru</p>
+            <p>📱 <strong>Telegram:</strong> @smp_vibe_news — все анонсы и секретные коды на ивенты.</p>
+            <div class="pixel-divider"></div>
+            <p>🎙️ Голосовой чат в игре через плагин — общайся в шахтах и на поверхности.</p>
+            <div class="ip-block">
+                🎮 <strong>IP сервера:</strong> d1.rustix.me:25212
+                <button class="copy-btn" onclick="copyToClipboard('d1.rustix.me:25212')">📋 КОПИРОВАТЬ</button>
+            </div>
+            <p>⭐ <em>Присоединяйся к Discord — там всегда актуальные новости и розыгрыши!</em></p>
+        `;
+        window.copyToClipboard = copyToClipboard;
+        showMessage('📡 Связь открыта — вступай в Discord: discord.gg/DszzbgQk!');
+    }
+    
+    // Проходка
+    function renderProhodka() {
+        contentDiv.innerHTML = `
+            <h2>⛏️ Проходка: копай глубже, лови вайб!</h2>
+            <p><strong style="color:#ffbc6e;">Сервер бесплатный, но только на этот вайб.</strong> Атмосфера старой школы, лютые шахты и никакой платной механики.</p>
+            <div class="free-badge">🎉 ДОСТУП БЕСПЛАТНЫЙ — НИКАКИХ ОПЛАТ! 🎉</div>
+            <div class="pixel-divider"></div>
+            <p>🔥 <strong>Что такое Проходка на SMP?</strong> — Это целая подземная империя: туннели на -54 уровень, алмазные жилы, соревнования шахтёров. Топ добытчиков получает редкие звания.</p>
+            <ul>
+                <li>🔸 Ежедневный бонус за 1000 блоков камня</li>
+                <li>🔸 Рейтинг "Лучший копатель" с призами</li>
+                <li>🔸 Подземный город с торговцами</li>
+                <li>🔸 Полностью бесплатные шахты для всех игроков!</li>
+            </ul>
+            <div class="pixel-divider"></div>
+            
+            <div style="background: #2a2a1c; padding: 20px; margin: 15px 0; border: 3px solid #ffaa33;">
+                <p style="margin-bottom: 15px;">📝 <strong>Введите ваш ник — спонсор krytou1755 получит уведомление в Discord!</strong></p>
+                <input type="text" id="nicknameInput" class="nickname-input" placeholder="Ваш игровой никнейм" maxlength="32">
+                <input type="text" id="messageInput" class="nickname-input" placeholder="Доп. сообщение (необязательно)" maxlength="200" style="margin-top: 10px;">
+                <button id="submitNickBtn" class="submit-nick-btn">📨 ОТПРАВИТЬ СПОНСОРУ KRYTOU1755</button>
+                <p style="font-size: 0.55rem; margin-top: 10px;">* Уведомление придёт спонсору krytou1755 в Discord. Он свяжется с вами для выдачи доступа к элитной проходке.</p>
+            </div>
+            
+            <div class="sponsor-contact">
+                <p>⭐ <strong>Спонсор проекта:</strong> <span style="color: #ffcc66;">krytou1755</span></p>
+                <p>📩 <strong>Как работает система:</strong> Вы оставляете свой ник → уведомление уходит krytou1755 в Discord → он связывается с вами</p>
+                <p>💬 Контакт спонсора: <span class="highlight">Discord: krytou1755</span> | Telegram: <span class="highlight">@krytou1755</span></p>
+                <p style="font-size: 0.65rem; margin-top: 8px;">✨ Поддержка спонсора помогает сохранять сервер бесплатным для всех игроков!</p>
+            </div>
+            
+            <div class="ip-block">
+                🎮 <strong>IP для подключения к Проходке:</strong><br>
+                <span style="font-size:1.2rem; font-weight:bold;">d1.rustix.me:25212</span>
+                <button class="copy-btn" onclick="copyToClipboard('d1.rustix.me:25212')">📋 КОПИРОВАТЬ IP</button>
+            </div>
+            <div class="pixel-divider"></div>
+            <p>🎁 <em>Тестовая фраза: "Сервер бесплатный, но только на этот вайб" — наш девиз по жизни! Заходи на <strong>d1.rustix.me:25212</strong> и кайфуй от проходки бесплатно.</em></p>
+        `;
+        
+        const submitBtn = document.getElementById('submitNickBtn');
+        if (submitBtn) {
+            const newSubmitBtn = submitBtn.cloneNode(true);
+            submitBtn.parentNode.replaceChild(newSubmitBtn, submitBtn);
+            newSubmitBtn.addEventListener('click', submitNickname);
+        }
+        
+        const nickInput = document.getElementById('nicknameInput');
+        if (nickInput) {
+            const newNickInput = nickInput.cloneNode(true);
+            nickInput.parentNode.replaceChild(newNickInput, nickInput);
+            newNickInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitNickname();
+                }
+            });
+        }
+        
+        const msgInput = document.getElementById('messageInput');
+        if (msgInput) {
+            const newMsgInput = msgInput.cloneNode(true);
+            msgInput.parentNode.replaceChild(newMsgInput, msgInput);
+            newMsgInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitNickname();
+                }
+            });
+        }
+        
+        window.copyToClipboard = copyToClipboard;
+        showMessage('⛏️ ПРОХОДКА: Введи ник — уведомление придёт спонсору krytou1755 в Discord!');
+    }
+    
+    // Обработчики кнопок
+    const homeBtn = document.getElementById('homeBtn');
+    const contactBtn = document.getElementById('contactBtn');
+    const prohodkaBtn = document.getElementById('prohodkaBtn');
+    
+    function addClickEffect(btnElement) {
+        if (!btnElement) return;
+        btnElement.style.transform = 'translateY(4px)';
+        btnElement.style.boxShadow = '0 2px 0 #2a2219';
+        setTimeout(() => {
+            if (btnElement) {
+                btnElement.style.transform = '';
+                btnElement.style.boxShadow = '';
+            }
+        }, 100);
+    }
+    
+    homeBtn.addEventListener('click', () => {
+        addClickEffect(homeBtn);
+        renderHome();
+    });
+    
+    contactBtn.addEventListener('click', () => {
+        addClickEffect(contactBtn);
+        renderContact();
+    });
+    
+    prohodkaBtn.addEventListener('click', () => {
+        addClickEffect(prohodkaBtn);
+        renderProhodka();
+    });
+    
+    renderHome();
+    
+    // Декоративные эффекты
+    const allBtns = document.querySelectorAll('.minecraft-btn');
+    allBtns.forEach(btn => {
+        btn.addEventListener('mouseenter', () => btn.style.filter = 'brightness(1.1)');
+        btn.addEventListener('mouseleave', () => btn.style.filter = 'brightness(1)');
+    });
+    
+    function createFloatingBlock() {
+        const block = document.createElement('div');
+        block.innerText = '🧱';
+        block.style.position = 'fixed';
+        block.style.fontSize = Math.random() * 20 + 12 + 'px';
+        block.style.bottom = Math.random() * 100 + 'px';
+        block.style.left = Math.random() * 100 + '%';
+        block.style.opacity = '0.08';
+        block.style.pointerEvents = 'none';
+        block.style.zIndex = '-1';
+        document.body.appendChild(block);
+        setTimeout(() => block.remove(), 20000);
+    }
+    setInterval(createFloatingBlock, 9000);
+    setTimeout(() => { createFloatingBlock(); createFloatingBlock(); }, 500);
+    
+    const headerTitle = document.querySelector('.server-title');
+    if(headerTitle) {
+        headerTitle.addEventListener('dblclick', () => {
+            const facts = [
+                '💎 Введи ник → уведомление спонсору krytou1755 в Discord!',
+                '⛏️ IP сервера: d1.rustix.me:25212 | Онлайн 22 игрока.',
+                '🎮 Спонсор krytou1755 получает все заявки в Discord.',
+                '📢 "Сервер бесплатный, но только на этот вайб" — главный принцип SMP.',
+                '🔥 Заходи на d1.rustix.me:25212 и копай алмазы бесплатно!',
+                '💬 Новый Discord сервер: discord.gg/DszzbgQk — присоединяйся!'
+            ];
+            showMessage(facts[Math.floor(Math.random() * facts.length)]);
+        });
+    }
+    
+    console.log("%cSMP | Бесплатный сервер | IP: d1.rustix.me:25212 | Discord: discord.gg/DszzbgQk", "color: #7ccf5c; font-size: 12px");
+</script>
+</body>
+</html>
